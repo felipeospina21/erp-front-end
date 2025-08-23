@@ -1,5 +1,5 @@
 import { CustomFormField } from '@/components/Shared';
-import { Client, useGetCitiesQuery, useGetDepartmentsQuery } from '@/redux/services';
+import { Client } from '@/redux/services';
 import { Button, Container, Input, Radio, RadioGroup, Select, Stack } from '@chakra-ui/react';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -27,15 +27,7 @@ export default function ClientForm({
   onSubmit,
   update,
 }: ClientFormProps): JSX.Element {
-  const {
-    handleSubmit,
-    control,
-    watch,
-    // formState: { errors },
-  } = useForm<ClientFormValues>();
-  const watchDepartment = watch('department', '');
-  const { data: departments } = useGetDepartmentsQuery();
-  const { data: cities } = useGetCitiesQuery(defaultValues?.department ?? watchDepartment);
+  const { handleSubmit, control } = useForm<ClientFormValues>();
 
   return (
     <Container>
@@ -86,7 +78,6 @@ export default function ClientForm({
         <CustomFormField
           id="idNumber"
           label="Doc"
-          // isError={!!errors?.name}
           isRequired={true}
           isDisabled={update}
           errorMessage="This field is required"
@@ -104,7 +95,6 @@ export default function ClientForm({
         <CustomFormField
           id="addres1"
           label="dirección 1"
-          // isError={!!errors?.name}
           isRequired={true}
           errorMessage="This field is required"
           variant={'floating'}
@@ -138,7 +128,6 @@ export default function ClientForm({
         <CustomFormField
           id="department"
           label="Departamento"
-          // isError={!!errors?.category as keyof FormValues}
           isRequired={true}
           errorMessage="This field is required"
           variant={'floating'}
@@ -148,22 +137,13 @@ export default function ClientForm({
             control={control}
             defaultValue={defaultValues?.department}
             rules={{ required: true }}
-            render={({ field: inputField }): JSX.Element => (
-              <Select placeholder="Select option" {...inputField}>
-                {departments?.map(({ name, _id }) => (
-                  <option key={_id} value={_id}>
-                    {name}
-                  </option>
-                ))}
-              </Select>
-            )}
+            render={({ field: inputField }): JSX.Element => <Input {...inputField} />}
           />
         </CustomFormField>
 
         <CustomFormField
           id="city"
           label="Ciudad"
-          // isError={!!errors?.category as keyof FormValues}
           isRequired={true}
           errorMessage="This field is required"
           variant={'floating'}
@@ -173,15 +153,7 @@ export default function ClientForm({
             control={control}
             defaultValue={defaultValues?.city}
             rules={{ required: true }}
-            render={({ field: inputField }): JSX.Element => (
-              <Select placeholder="Select option" {...inputField}>
-                {cities?.map(({ name, _id }) => (
-                  <option key={_id} value={_id}>
-                    {name}
-                  </option>
-                ))}
-              </Select>
-            )}
+            render={({ field: inputField }): JSX.Element => <Input {...inputField} />}
           />
         </CustomFormField>
 
@@ -202,14 +174,7 @@ export default function ClientForm({
           />
         </CustomFormField>
 
-        <CustomFormField
-          id="discount"
-          label="Descuento"
-          // isError={!!errors?.name}
-          isRequired={true}
-          // errorMessage="This field is required"
-          variant={'floating'}
-        >
+        <CustomFormField id="discount" label="Descuento" isRequired={true} variant={'floating'}>
           <Controller
             name="discount"
             control={control}
@@ -222,7 +187,6 @@ export default function ClientForm({
         <CustomFormField
           id="paymentTerm"
           label="Pago"
-          // isError={!!errors?.category as keyof FormValues}
           isRequired={true}
           errorMessage="This field is required"
           variant={'floating'}
@@ -247,7 +211,6 @@ export default function ClientForm({
         <CustomFormField
           id="retailer"
           label="Distribuidor"
-          // isError={!!errors?.category as keyof FormValues}
           isRequired={true}
           errorMessage="This field is required"
           variant={'floating'}
