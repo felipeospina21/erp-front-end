@@ -1,34 +1,72 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# erp-front-end
 
-## Getting Started
+Front end of a small ERP (sales and inventory management) that I built for a food-industry business. It handles clients, products and the full life of a sale, from order entry to invoicing. The UI is in Spanish.
 
-First, run the development server:
+The API it talks to lives in [`erp-back-end`](https://github.com/felipeospina21/erp-back-end).
+
+## Features
+
+- **Login**: session-based auth against the back end
+- **Clients**: create, edit and list clients
+- **Products**: product catalog with categories, product forms and stock updates
+- **Sales** (`/ventas`):
+  - new sale form (`nueva-venta`)
+  - open sales (`ventas-abiertas`)
+  - sales list (`listado-ventas`)
+  - status tracking through production, dispatch, delivery, invoicing and payment
+- **PDF documents**: invoices and packing lists generated in the browser with `pdf-lib`
+- **Cities lookup**: city data from a public open-data API (datos.gov)
+- **Drag and drop** in the sales workflow (`react-dnd`)
+
+## Tech stack
+
+- [Next.js](https://nextjs.org/) 12 (pages router), React 17 and TypeScript
+- Redux Toolkit and RTK Query
+- Chakra UI and Framer Motion
+- React Hook Form
+- `pdf-lib` for PDFs
+- Jest, React Testing Library and MSW for tests
+- ESLint, Prettier, Husky and lint-staged
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env.local` file with these variables (values are specific to your setup):
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_API_URL=
+NEXT_PUBLIC_COUNT_ID=
+NEXT_PUBLIC_SALE_REF_COUNT_ID=
+NEXT_PUBLIC_DATOS_GOV_URL=
+NEXT_PUBLIC_DATOS_GOV_API_TOKEN=
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+`NEXT_PUBLIC_API_URL` should point to a running `erp-back-end`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+npm run dev          # Dev server at http://localhost:3000
+npm run build        # Production build
+npm start            # Run the production build
+npm run lint         # ESLint
+npm test             # Jest
+npm run test-cover   # Jest with coverage
+```
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── pages/        # login, clientes, productos, costos and ventas/*
+├── components/   # Clients, Products, Sales, Login and Shared UI
+├── redux/        # Store, slices (user, clients, sales, shipping) and RTK Query services
+├── utils/        # PDF generation, formatting and test utilities (MSW, mock data)
+├── hooks/
+├── config/
+└── styles/
+__test__/         # Page-level tests
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+> This was a personal project and is no longer actively maintained. The `costos` page is a placeholder.
